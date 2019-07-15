@@ -13,5 +13,6 @@
   </metadata>
     <files>
         <file src="DesignAutomationInventorUtilities\bin\Release\netstandard2.0\Autodesk.Forge.DesignAutomation.Inventor.Utils.dll" target="lib\netstandard2.0\Autodesk.Forge.DesignAutomation.Inventor.Utils.dll" />
+        <file src="DesignAutomationInventorUtilities\bin\Release\netstandard2.0\Autodesk.Forge.DesignAutomation.Inventor.Utils.pdb" target="lib\netstandard2.0\Autodesk.Forge.DesignAutomation.Inventor.Utils.pdb" />
     </files>
 </package>
