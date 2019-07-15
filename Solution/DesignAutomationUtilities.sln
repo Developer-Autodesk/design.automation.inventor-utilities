@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.645
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesignAutomationInventorUtilities", "DesignAutomationInventorUtilities\DesignAutomationInventorUtilities.csproj", "{2A61823E-9DE5-4EA9-91FA-B150E2D247B6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2A61823E-9DE5-4EA9-91FA-B150E2D247B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A61823E-9DE5-4EA9-91FA-B150E2D247B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A61823E-9DE5-4EA9-91FA-B150E2D247B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A61823E-9DE5-4EA9-91FA-B150E2D247B6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {21E90C73-7857-4ECB-B5AB-E42A8F176F49}
+	EndGlobalSection
+EndGlobal
