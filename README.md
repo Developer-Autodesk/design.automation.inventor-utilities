@@ -21,13 +21,17 @@ Please refer to [this sample](https://github.com/Developer-Autodesk/design.autom
 #### HeartBeat class
 
 ```csharp
-// add quick sample here
+using (new HeartBeat())
+{
+    // some long operation here
+}
 ```
 
 #### OnDemand.HttpOperation function
 
 ```csharp
-// add quick sample here
+// simply call the method with the parameter
+OnDemand.HttpOperation(name, suffix, headers, requestContentOrFile, responseFile)
 ```
 
 
