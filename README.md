@@ -1,5 +1,5 @@
 
-# Design Automation for Inventor utility library
+# Design Automation for Inventor - Utility Library
 
 ![Platforms](https://img.shields.io/badge/Platform-Windows-lightgrey.svg)
 ![.NET](https://img.shields.io/badge/.NET%20Standard-2.0-blue.svg)
@@ -8,7 +8,7 @@
 ![Platforms](https://img.shields.io/badge/Design%20Automation-v3-green.svg)
 ![Platforms](https://img.shields.io/badge/Inventor-2018|2019|2020-yellow.svg)
 
-This is package helps leverage Inventor plugin code for Design Automation. The compiled version is available on [Nuget](https://www.nuget.org/packages/Autodesk.Forge.DesignAutomation.Inventor). 
+This is package helps leverage Inventor plugin code for Design Automation. The compiled version is available on [Nuget](https://www.nuget.org/packages/Autodesk.Forge.DesignAutomation.Inventor.Utils). 
 
 ## Usage
 

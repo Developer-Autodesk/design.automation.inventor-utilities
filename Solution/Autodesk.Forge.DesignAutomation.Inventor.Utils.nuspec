@@ -2,9 +2,9 @@
 <package >
   <metadata>
     <id>Autodesk.Forge.DesignAutomation.Inventor.Utils</id>
-    <version>1.0.0</version>
-    <authors>Design Automation Team</authors>
-    <owners>Design Automation Team</owners>
+    <version>1.0.0-beta1</version>
+    <authors>Design Automation for Inventor Team</authors>
+    <owners>Design Automation for Inventor Team</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Design Automation Inventor utilities</description>
     <releaseNotes></releaseNotes>
