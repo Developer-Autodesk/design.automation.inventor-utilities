@@ -44,11 +44,11 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils
                 char ch = Convert.ToChar(Console.Read());
                 if (ch == '\x3')
                 {
-                    return true;
+                    return false;
                 }
                 else if (ch == '\n')
                 {
-                    return false;
+                    return true;
                 }
 
                 if (idx >= 16)
