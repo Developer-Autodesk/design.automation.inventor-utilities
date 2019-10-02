@@ -80,8 +80,8 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils
             if (headers == null)
                 return null;
 
-            // Use the following format key1: value1; key2: value2
-            return string.Join(";", headers.Select(x => x.Key + ":" + x.Value));
+            // Use the following format key1= value1; key2= value2
+            return string.Join(";", headers.Select(x => x.Key + "=" + x.Value));
         }
 
         /// <summary>
