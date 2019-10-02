@@ -31,9 +31,11 @@ using (new HeartBeat())
 
 ```csharp
 // simply call the method with the parameter
-OnDemand.HttpOperation(name, suffix, headers, requestContentOrFile, responseFile)
+OnDemand.HttpOperation(name, suffix, headers, responseFile)
 ```
 
+## Release notes
+* [release notes](releasenotes.md)
 
 ## License
 
