@@ -17,7 +17,9 @@
 /////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Autodesk.Forge.DesignAutomation.Inventor.Utils
 {
@@ -28,15 +30,23 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils
         /// </summary>
         /// <param name="name">Argument name in activity you want to download</param>
         /// <param name="suffix">It is possible to add a suffix to URL given in a workitem</param>
-        /// <param name="headers">It allows you to add HTTP headers. Use the following format key1:value1;key2:value2</param>
+        /// <param name="headers">It allows you to add HTTP headers.</param>
         /// <param name="requestContentOrFile">The Body of the HTTP request</param>
         /// <param name="responseFile">The name of the downloaded file. Use the following format file://filename.ext</param>
         /// <returns>True when download ends successfully</returns>
-        public static bool HttpOperation(string name, string suffix, string headers, string requestContentOrFile,
-            string responseFile)
+        public static bool HttpOperation(string name, string suffix, Dictionary<string, string> headers,
+            string responseFile, string requestContentOrFile=null)
         {
+            // Throw an exception for values other than empty string or null 
+            if (requestContentOrFile != null && requestContentOrFile.Length > 0)
+            {
+                throw NotImplementedException("parameter requestContentOrFile not supported");
+            }
+
+            string headersStr = ParseHeaders(headers);
+
             LogTrace("!ACESAPI:acesHttpOperation({0},{1},{2},{3},{4})",
-                name ?? "", suffix ?? "", headers ?? "", requestContentOrFile ?? "", responseFile ?? "");
+                name ?? "", suffix ?? "", headersStr ?? "", requestContentOrFile ?? "", responseFile ?? "");
 
             int idx = 0;
             while (true)
@@ -58,6 +68,20 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils
 
                 idx++;
             }
+        }
+
+        private static Exception NotImplementedException(string v)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static string ParseHeaders(Dictionary<string, string> headers)
+        {
+            if (headers == null)
+                return null;
+
+            // Use the following format key1= value1; key2= value2
+            return string.Join(";", headers.Select(x => x.Key + "=" + x.Value));
         }
 
         /// <summary>
