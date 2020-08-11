@@ -27,21 +27,21 @@ namespace DesignAutomationInventorUtilities_Tests.Helpers
         {
             NameValueMap nameValueMap = new NameValueMapStub();
             nameValueMap.Value["Test"] = "TestString";
+
+            NameValueMapHelper nameValueMapHelper = new NameValueMapHelper(nameValueMap);
+            bool success = nameValueMapHelper.TryGetValueAs("Test", out string str);
+            Assert.Equal("TestString", str);
+        }
+
+        [Fact]
+        public void Test2()
+        {
+            /*
+            NameValueMap nameValueMap = new NameValueMapStub();
+            nameValueMap.Value["Test"] = "TestString";
             nameValueMap.Value["Test2"] = new TestClass();
 
             NameValueMapHelper nameValueMapHelper = new NameValueMapHelper(nameValueMap);
-
-            /*
-            ///////////
-            NameValueMapValue value = new NameValueMapValue("Test");
-            NameValueMapValue value2 = new NameValueMapValue(1);
-            NameValueMapValue value3 = new NameValueMapValue(new object[]{ "Ziltoid", true, 3});
-
-            Console.Write(value.AsString);
-            Console.Write(value2.AsInt);
-            int v = value3.AsCollection()[0].AsInt;
-            Console.Write(value3.AsCollection()[0]);
-            */
 
             // Collection example
             NameValueMapValue collectionValue = new NameValueMapValue("value_one value_two value_three value_four");
@@ -87,6 +87,7 @@ namespace DesignAutomationInventorUtilities_Tests.Helpers
             s3 = boolValue2.TryGetAs<int>(out int outValue5);
 
             Assert.False(outBoolValue2);
+            */
         }
     }
 }

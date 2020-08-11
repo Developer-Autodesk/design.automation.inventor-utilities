@@ -18,64 +18,81 @@
 
 using Inventor;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
 {
     public class InvalidValueTypeException : Exception
     {
-        public InvalidValueTypeException(string message) : base(message)
-        { }
+        public InvalidValueTypeException(string message) : base(message) {}
     }
 
-    public class NameValueMapValue
+    public class NameValueMapHelper
     {
-        private readonly object value;
+        private readonly NameValueMap nameValueMap;
 
-        public string AsString
+        public NameValueMapHelper(NameValueMap nameValueMap)
         {
-            get
-            {
-                if (TryGetAs<string>(out string strValue))
-                    return strValue;
-
-                throw new InvalidValueTypeException("Value cannot be used as a string");
-            }
+            this.nameValueMap = nameValueMap;
         }
 
-        public int AsInt
-        {
-            get
-            {
-                if (TryGetAs<int>(out int intValue))
-                    return intValue;
+        public bool HasKey(string key) => nameValueMap.Value[key] != null;
 
-                throw new InvalidValueTypeException("Value cannot be used as an integer");
-            }
+        public string AsString(string index)
+        {
+            if (TryGetValueAs(index, out string strValue))
+                return strValue;
+
+            throw new InvalidValueTypeException("Value cannot be used as a string");
         }
 
-        public double AsDouble
+        public int AsInt(string index)
         {
-            get
-            {
-                if (TryGetAs<double>(out double doubleValue))
-                    return doubleValue;
+            if (TryGetValueAs(index, out int intValue))
+                return intValue;
 
-                throw new InvalidValueTypeException("Value cannot be used as a double");
-            }
+            throw new InvalidValueTypeException("Value cannot be used as an integer");
         }
 
-        public bool AsBool
+        public double AsDouble(string index)
         {
-            get
-            {
-                if (TryGetAs<bool>(out bool boolValue))
-                    return boolValue;
+            if (TryGetValueAs(index, out double doubleValue))
+                return doubleValue;
 
-                throw new InvalidValueTypeException("Value cannot be used as a boolean");
-            }
+            throw new InvalidValueTypeException("Value cannot be used as a double");
         }
 
+        public bool AsBool(string index)
+        {
+            if (TryGetValueAs(index, out bool boolValue))
+                return boolValue;
+
+            throw new InvalidValueTypeException("Value cannot be used as a boolean");
+        }
+
+        public T AsEnum<T>(string index, bool ignoreCase = true) where T : struct, IConvertible
+        {
+            if (!typeof(T).IsEnum)
+            {
+                throw new ArgumentException("T is not an enum type");
+            }
+
+            T enumValue;
+
+            try
+            {
+                enumValue = (T)Enum.Parse(typeof(T), nameValueMap.Value[index].ToString(), ignoreCase);
+            }
+            catch (Exception)
+            {
+                throw new InvalidValueTypeException("Value cannot be used as an enum");
+            }
+
+            return enumValue;
+        }
+
+        /*
         public List<NameValueMapValue> AsCollection(char separator = ' ')
         {
             List<NameValueMapValue> collection = null;
@@ -99,34 +116,20 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
 
             return collection;
         }
+        */
 
-        public T AsEnum<T>(bool ignoreCase = true) where T: struct, IConvertible
+        public IEnumerable TryGetCollection<T>(string index)
         {
-            if (!typeof(T).IsEnum)
-            {
-                throw new ArgumentException("T is not an enum type");
-            }
-
-            T enumValue;
-
-            try
-            {
-                enumValue = (T)Enum.Parse(typeof(T), value.ToString(), ignoreCase);
-            }
-            catch (Exception) 
-            {
-                throw new InvalidValueTypeException("Value cannot be used as an enum");
-            }
-
-            return enumValue;
+            throw new NotImplementedException();
         }
 
-        public NameValueMapValue(object value)
+        public bool TryGetValueAs<T>(string index, out T outValue)
         {
-            this.value = value;
+            var value = nameValueMap.Value[index];
+            return TryGetValueAs<T>(value, out outValue);
         }
 
-        public bool TryGetAs<T>(out T outValue)
+        private bool TryGetValueAs<T>(object value, out T outValue)
         {
             if (value is T convertedValue)
             {
@@ -149,22 +152,5 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
 
             return success;
         }
-    }
-
-    public class NameValueMapHelper
-    {
-        private readonly NameValueMap nameValueMap;
-
-        public NameValueMapValue this[string index]
-        {
-            get { return new NameValueMapValue(nameValueMap.Value[index]); }
-        }
-
-        public NameValueMapHelper(NameValueMap nameValueMap)
-        {
-            this.nameValueMap = nameValueMap;
-        }
-
-        public bool HasKey(string key) => nameValueMap.Value[key] != null;
     }
 }
