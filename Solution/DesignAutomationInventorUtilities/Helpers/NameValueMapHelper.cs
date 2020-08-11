@@ -71,66 +71,80 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
             throw new InvalidValueTypeException("Value cannot be used as a boolean");
         }
 
-        public T AsEnum<T>(string index, bool ignoreCase = true) where T : struct, IConvertible
+        public T AsBool<T>(string index)
         {
-            if (!typeof(T).IsEnum)
-            {
-                throw new ArgumentException("T is not an enum type");
-            }
+            if (TryGetValueAs(index, out T enumValue))
+                return enumValue;
 
-            T enumValue;
-
-            try
-            {
-                enumValue = (T)Enum.Parse(typeof(T), nameValueMap.Value[index].ToString(), ignoreCase);
-            }
-            catch (Exception)
-            {
-                throw new InvalidValueTypeException("Value cannot be used as an enum");
-            }
-
-            return enumValue;
+            throw new InvalidValueTypeException("Value cannot be used as an enum");
         }
 
-        /*
-        public List<NameValueMapValue> AsCollection(char separator = ' ')
+        public IEnumerable<string> AsStringCollection(string index)
         {
-            List<NameValueMapValue> collection = null;
-
-            if (value is string stringValue)
-            {
-                collection = new List<NameValueMapValue>();
-                string[] splitString = stringValue.Split(separator);
-                foreach (string str in splitString)
-                    collection.Add(new NameValueMapValue(str));
-            }
-            else if (value is System.Collections.IEnumerable enumerableValue)
-            {
-                collection = new List<NameValueMapValue>();
-                foreach (object value in enumerableValue)
-                    collection.Add(new NameValueMapValue(value));
-            }
-
-            if (collection == null)
-                throw new InvalidValueTypeException("Value cannot be used as a collection");
-
-            return collection;
+            return GetValuesCollection<string>(index);
         }
-        */
 
-        public IEnumerable TryGetCollection<T>(string index)
+        public IEnumerable<int> AsIntCollection(string index)
         {
-            throw new NotImplementedException();
+            return GetValuesCollection<int>(index);
+        }
+
+        public IEnumerable<double> AsDoubleCollection(string index)
+        {
+            return GetValuesCollection<double>(index);
+        }
+
+        public IEnumerable<bool> AsBoolCollection(string index)
+        {
+            return GetValuesCollection<bool>(index);
+        }
+
+        public IEnumerable<T> AsEnumCollection<T>(string index)
+        {
+            return GetValuesCollection<T>(index);
+        }
+
+        public IEnumerable<T> GetValuesCollection<T>(string index)
+        {
+            if (!TryGetValueAs(index, out string outString))
+                throw new InvalidValueTypeException("Value cannot be used as a collection because it is not a string");
+
+            string[] splitValue = outString.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+            List<T> list = new List<T>();
+            foreach (string subValue in splitValue) 
+            {
+                if (!TryGetValueFromObjectAs(subValue, out T outValue))
+                    throw new InvalidValueTypeException("Value cannot be used as a collection");
+
+                list.Add(outValue);
+            }
+
+            return list;
         }
 
         public bool TryGetValueAs<T>(string index, out T outValue)
         {
             var value = nameValueMap.Value[index];
-            return TryGetValueAs<T>(value, out outValue);
+            return TryGetValueFromObjectAs<T>(value, out outValue);
         }
 
-        private bool TryGetValueAs<T>(object value, out T outValue)
+        private bool TryGetValueFromObjectAs<T>(object value, out T outValue)
         {
+            if (typeof(T).IsEnum) 
+            {
+                try
+                {
+                    outValue = (T)Enum.Parse(typeof(T), value.ToString(), true);
+                }
+                catch (Exception)
+                {
+                    throw new InvalidValueTypeException("Value cannot be used as an enum");
+                }
+
+                return true;
+            }
+
             if (value is T convertedValue)
             {
                 outValue = convertedValue;
