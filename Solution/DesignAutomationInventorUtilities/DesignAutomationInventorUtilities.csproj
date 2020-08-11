@@ -16,4 +16,10 @@
     <IncludeSymbols>true</IncludeSymbols> 
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="Autodesk.Inventor.Interop">
+      <HintPath>..\..\..\io-engine\Autodesk.Inventor.Interop.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
