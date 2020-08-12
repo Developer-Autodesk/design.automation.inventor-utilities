@@ -50,6 +50,18 @@ map.Value["BoolCollection"] = "True, False, FALSE, TRUE, False, true, false, tru
 map.Value["EnumCollection"] = "VALUE_ONE, VALUe_TWO, VALUE_THREE, VALUE_FIVE, VALUE_FOUR";
 ```
 
+And custom enumerator class MyEnum
+```csharp
+enum MyEnum
+{
+    VALUE_ONE = 10,
+    VALUE_TWO,
+    VALUE_THREE,
+    VALUE_FOUR,
+    VALUE_FIVE
+}
+```
+
 ```csharp
 public void Example(NameValueMap map) 
 {
@@ -58,7 +70,7 @@ public void Example(NameValueMap map)
 
 ```
 
-To check that the index is present you can simply call HasKey on the helper insantce
+To check that the index is present in the NameValueMap you can simply call HasKey on the helper insantce
 
 ```csharp
 	if (mapHelper.HasKey("StringValue")) 
@@ -67,7 +79,7 @@ To check that the index is present you can simply call HasKey on the helper insa
 	}
 ```
 
-You can now use an array of As(type) methods to simplify the process of extracting right data type from the map.
+You can use an array of As(type) methods to simplify the process of extracting right data type from the map.
 
 ```csharp
 	string myStringValue = mapHelper.AsString("StringValue");
@@ -76,7 +88,7 @@ You can now use an array of As(type) methods to simplify the process of extracti
 	bool myStringValue = mapHelper.AsBool("BoolValue");
 ```
 
-You can also convert string values separated either by space or by coma into enumerable collections of desired types (As long as the string array can be converted to the desired type)
+You can also convert string values separated either by space or by coma into enumerable collections of desired types (As long as the string array can be converted to the that type)
 
 ```csharp
 	IEnumerable<string> myStringCollection = mapHelper.AsStringCollection("StringCollection");
@@ -99,7 +111,7 @@ To try and convert the map value to any other type, you can use TryGetValueAs an
 }
 ```
 
-All the As methods and GetValuesCollection throw InvalidValueTypeException when the conversion fails or KeyNotFoundException when the key index is not present int he map. TryGetValueAs instead returns bool to indicate success/failure.
+All the As methods and GetValuesCollection throw InvalidValueTypeException when the conversion fails or KeyNotFoundException when the key index is not present within the map. TryGetValueAs instead returns bool to indicate success/failure.
 
 ## Release notes
 * [release notes](releasenotes.md)
