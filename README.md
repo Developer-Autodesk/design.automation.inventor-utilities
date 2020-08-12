@@ -54,7 +54,7 @@ And custom enumerator class MyEnum
 ```csharp
 enum MyEnum
 {
-    VALUE_ONE = 10,
+    VALUE_ONE,
     VALUE_TWO,
     VALUE_THREE,
     VALUE_FOUR,
