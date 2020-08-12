@@ -26,54 +26,22 @@ namespace DesignAutomationInventorUtilities_Tests.Helpers
 {
     enum TestEnum
     {
-        VALUE_ONE = 10,
+        VALUE_ONE,
         VALUE_TWO,
         VALUE_THREE,
         VALUE_FOUR,
         VALUE_FIVE
     }
 
-    public class TestDataProvider : IEnumerable<object[]>
-    {
-        public IEnumerator<object[]> GetEnumerator()
-        {
-            NameValueMap nameValueMap = new NameValueMapStub();
-            nameValueMap.Value["StringValue"] = "TestString";
-            nameValueMap.Value["IntValue"] = "356";
-            nameValueMap.Value["DoubleValue"] = "114.3998";
-            nameValueMap.Value["BoolValue"] = "True";
-            nameValueMap.Value["EnumValue"] = "VALUE_FOUR";
-
-            nameValueMap.Value["StringCollection"] = "Alpha, beta, gamma, 1, 2, 3, 4, delta, 6, longer_teeeeeextttttt";
-            nameValueMap.Value["IntCollection"] = "5, 8, 9, 100, 2, 3, 4096, 5, 60";
-            nameValueMap.Value["DoubleCollection"] = "4.2, 11.82, 9.156, 10009.45, 200.42, 30.333, 4.2, 12.0, 9.0";
-            nameValueMap.Value["BoolCollection"] = "True, False, FALSE, TRUE, False, true, false, true, True";
-            nameValueMap.Value["EnumCollection"] = "VALUE_ONE, VALUe_TWO, VALUE_THREE, VALUE_FIVE, VALUE_FOUR";
-
-            Dictionary<string, object> expectedResults = new Dictionary<string, object>()
-                {
-                    {"StringValue", "TestString"},
-                    {"IntValue", 356},
-                    {"DoubleValue", 114.3998d},
-                    {"BoolValue", true},
-                    {"EnumValue", TestEnum.VALUE_FOUR},
-
-                    {"StringCollection", new List<string> {"Alpha", "beta", "gamma", "1", "2", "3", "4", "delta", "6", "longer_teeeeeextttttt"} },
-                    {"IntCollection", new List<int> {5, 8, 9, 100, 2, 3, 4096, 5, 60} },
-                    {"DoubleCollection", new List<double> {4.2d, 11.82d, 9.156d, 10009.45d, 200.42d, 30.333d, 4.2d, 12.0d, 9.0d} },
-                    {"BoolCollection", new List<bool> {true, false, false, true, false, true, false, true, true} },
-                    {"EnumCollection", new List<TestEnum> { TestEnum.VALUE_ONE, TestEnum.VALUE_TWO, TestEnum.VALUE_THREE, TestEnum.VALUE_FIVE, TestEnum.VALUE_FOUR } }
-
-                };
-
-            yield return new object[] { new NameValueMapHelper(nameValueMap), expectedResults };
-        }
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-    }
-
     public class NameValueMapHelperTests
     {
+        private NameValueMap nameValueMap;
+
+        public NameValueMapHelperTests()
+        {
+            nameValueMap = new NameValueMapStub();
+        }
+
         [Fact]
         public void ExceptionsTest()
         {
@@ -142,84 +110,114 @@ namespace DesignAutomationInventorUtilities_Tests.Helpers
             Assert.Equal(TestEnum.VALUE_ONE, enumResult);
         }
 
-        [Theory]
-        [ClassData(typeof(TestDataProvider))]
-        public void StringTest(NameValueMapHelper mapHelper, Dictionary<string, object> expectedResults)
+        [Fact]
+        public void StringTest()
         {
+            var expectedResult = "TestString";
+            nameValueMap.Value["StringValue"] = "TestString";
+            NameValueMapHelper mapHelper = new NameValueMapHelper(nameValueMap);
+
             string str1 = mapHelper.AsString("StringValue");
-            Assert.Equal(expectedResults["StringValue"], str1);
+            Assert.Equal(expectedResult, str1);
         }
 
-        [Theory]
-        [ClassData(typeof(TestDataProvider))]
-        public void StringCollectionTest(NameValueMapHelper mapHelper, Dictionary<string, object> expectedResults)
+        [Fact]
+        public void StringCollectionTest()
         {
+            var expectedResult = new List<string> { "Alpha", "beta", "gamma", "1", "2", "3", "4", "delta", "6", "longer_teeeeeextttttt" };
+            nameValueMap.Value["StringCollection"] = "Alpha, beta, gamma, 1, 2, 3, 4, delta, 6, longer_teeeeeextttttt";
+            NameValueMapHelper mapHelper = new NameValueMapHelper(nameValueMap);
+
             IEnumerable<string> strCollection1 = mapHelper.AsStringCollection("StringCollection");
-            Assert.Equal(expectedResults["StringCollection"], strCollection1);
+            Assert.Equal(expectedResult, strCollection1);
         }
 
-        [Theory]
-        [ClassData(typeof(TestDataProvider))]
-        public void IntTest(NameValueMapHelper mapHelper, Dictionary<string, object> expectedResults)
+        [Fact]
+        public void IntTest()
         {
+            var expectedResult = 356;
+            nameValueMap.Value["IntValue"] = "356";
+            NameValueMapHelper mapHelper = new NameValueMapHelper(nameValueMap);
+
             int intValue = mapHelper.AsInt("IntValue");
-            Assert.Equal(expectedResults["IntValue"], intValue);
+            Assert.Equal(expectedResult, intValue);
         }
 
-        [Theory]
-        [ClassData(typeof(TestDataProvider))]
-        public void IntCollectionTest(NameValueMapHelper mapHelper, Dictionary<string, object> expectedResults)
+        [Fact]
+        public void IntCollectionTest()
         {
+            var expectedResult = new List<int> { 5, 8, 9, 100, 2, 3, 4096, 5, 60 };
+            nameValueMap.Value["IntCollection"] = "5, 8, 9, 100, 2, 3, 4096, 5, 60";
+            NameValueMapHelper mapHelper = new NameValueMapHelper(nameValueMap);
+
             IEnumerable<int> intCollection = mapHelper.AsIntCollection("IntCollection");
-            Assert.Equal(expectedResults["IntCollection"], intCollection);
+            Assert.Equal(expectedResult, intCollection);
         }
 
-        [Theory]
-        [ClassData(typeof(TestDataProvider))]
-        public void DoubleTest(NameValueMapHelper mapHelper, Dictionary<string, object> expectedResults)
+        [Fact]
+        public void DoubleTest()
         {
+            var expectedResult = 114.3998d;
+            nameValueMap.Value["DoubleValue"] = "114.3998";
+            NameValueMapHelper mapHelper = new NameValueMapHelper(nameValueMap);
+
             double doubleValue = mapHelper.AsDouble("DoubleValue");
-            Assert.Equal(expectedResults["DoubleValue"], doubleValue);
+            Assert.Equal(expectedResult, doubleValue);
         }
 
-        [Theory]
-        [ClassData(typeof(TestDataProvider))]
-        public void DoubleCollectionTest(NameValueMapHelper mapHelper, Dictionary<string, object> expectedResults)
+        [Fact]
+        public void DoubleCollectionTest()
         {
+            var expectedResult = new List<double> { 4.2d, 11.82d, 9.156d, 10009.45d, 200.42d, 30.333d, 4.2d, 12.0d, 9.0d };
+            nameValueMap.Value["DoubleCollection"] = "4.2, 11.82, 9.156, 10009.45, 200.42, 30.333, 4.2, 12.0, 9.0";
+            NameValueMapHelper mapHelper = new NameValueMapHelper(nameValueMap);
+
             IEnumerable<double> doubleCollection = mapHelper.AsDoubleCollection("DoubleCollection");
-            Assert.Equal(expectedResults["DoubleCollection"], doubleCollection);
+            Assert.Equal(expectedResult, doubleCollection);
         }
 
-        [Theory]
-        [ClassData(typeof(TestDataProvider))]
-        public void BoolTest(NameValueMapHelper mapHelper, Dictionary<string, object> expectedResults)
+        [Fact]
+        public void BoolTest()
         {
+            var expectedResult = true;
+            nameValueMap.Value["BoolValue"] = "True";
+            NameValueMapHelper mapHelper = new NameValueMapHelper(nameValueMap);
+
             bool boolValue = mapHelper.AsBool("BoolValue");
-            Assert.Equal(expectedResults["BoolValue"], boolValue);
+            Assert.Equal(expectedResult, boolValue);
         }
 
-        [Theory]
-        [ClassData(typeof(TestDataProvider))]
-        public void BoolCollectionTest(NameValueMapHelper mapHelper, Dictionary<string, object> expectedResults)
+        [Fact]
+        public void BoolCollectionTest()
         {
+            var expectedResult = new List<bool> { true, false, false, true, false, true, false, true, true };
+            nameValueMap.Value["BoolCollection"] = "True, False, FALSE, TRUE, False, true, false, true, True";
+            NameValueMapHelper mapHelper = new NameValueMapHelper(nameValueMap);
+
             IEnumerable<bool> doubleCollection = mapHelper.AsBoolCollection("BoolCollection");
-            Assert.Equal(expectedResults["BoolCollection"], doubleCollection);
+            Assert.Equal(expectedResult, doubleCollection);
         }
 
-        [Theory]
-        [ClassData(typeof(TestDataProvider))]
-        public void EnumTest(NameValueMapHelper mapHelper, Dictionary<string, object> expectedResults)
+        [Fact]
+        public void EnumTest()
         {
+            var expectedResult = TestEnum.VALUE_FOUR;
+            nameValueMap.Value["EnumValue"] = "VALUE_FOUR";
+            NameValueMapHelper mapHelper = new NameValueMapHelper(nameValueMap);
+
             TestEnum enumValue = mapHelper.AsEnum<TestEnum>("EnumValue");
-            Assert.Equal(expectedResults["EnumValue"], enumValue);
+            Assert.Equal(expectedResult, enumValue);
         }
 
-        [Theory]
-        [ClassData(typeof(TestDataProvider))]
-        public void Enum1CollectionTest(NameValueMapHelper mapHelper, Dictionary<string, object> expectedResults)
+        [Fact]
+        public void EnumCollectionTest()
         {
+            var expectedResult = new List<TestEnum> { TestEnum.VALUE_ONE, TestEnum.VALUE_TWO, TestEnum.VALUE_THREE, TestEnum.VALUE_FIVE, TestEnum.VALUE_FOUR };
+            nameValueMap.Value["EnumCollection"] = "VALUE_ONE, VALUe_TWO, VALUE_THREE, VALUE_FIVE, VALUE_FOUR";
+            NameValueMapHelper mapHelper = new NameValueMapHelper(nameValueMap);
+
             IEnumerable<TestEnum> enumCollection = mapHelper.AsEnumCollection<TestEnum>("EnumCollection");
-            Assert.Equal(expectedResults["EnumCollection"], enumCollection);
+            Assert.Equal(expectedResult, enumCollection);
         }
     }
 }
