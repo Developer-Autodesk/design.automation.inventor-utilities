@@ -54,7 +54,7 @@ map.Value["EnumCollection"] = "VALUE_ONE, VALUe_TWO, VALUE_THREE, VALUE_FIVE, VA
 ```csharp
 public void Example(NameValueMap map) 
 {
-	// NameValueMapHelper is fully imutable, it will never modify the content of the source NameValueMap
+	// NameValueMapHelper will never modify the content of the source NameValueMap
 	NameValueMapHelper mapHelper = new NameValueMapHelper(map);
 
 ```
