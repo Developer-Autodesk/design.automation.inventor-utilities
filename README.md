@@ -35,8 +35,7 @@ OnDemand.HttpOperation(name, suffix, headers, responseFile)
 ```
 
 #### NameValueMapHelper class
-This optional class is designed to simplify work with the data inside the NameValueMap. 
-
+This optional class is designed to simplify work with the data inside of the NameValueMap. 
 For this example lets consider a NameValueMap that contains these data:
 ```csharp
 map.Value["StringValue"] = "TestString";
