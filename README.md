@@ -34,6 +34,9 @@ using (new HeartBeat())
 OnDemand.HttpOperation(name, suffix, headers, responseFile)
 ```
 
+#### NameValueMapHelper class
+* [NameValueMapHelper page](NameValueMapHelper.md)
+
 ## Release notes
 * [release notes](releasenotes.md)
 
