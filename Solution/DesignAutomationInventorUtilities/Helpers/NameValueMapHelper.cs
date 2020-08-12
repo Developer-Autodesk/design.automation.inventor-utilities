@@ -18,7 +18,6 @@
 
 using Inventor;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
@@ -31,13 +30,26 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
     public class NameValueMapHelper
     {
         private readonly NameValueMap nameValueMap;
+        private readonly DataConverter dataConverter;
 
         public NameValueMapHelper(NameValueMap nameValueMap)
         {
             this.nameValueMap = nameValueMap;
+            dataConverter = new DataConverter();
         }
 
-        public bool HasKey(string key) => nameValueMap.Value[key] != null;
+        public bool HasKey(string key)
+        {
+            bool hasKey;
+
+            try
+            {
+                hasKey = nameValueMap.Value[key] != null;
+            }
+            catch (Exception) { hasKey = false; }
+
+            return hasKey;
+        }
 
         public string AsString(string index)
         {
@@ -71,7 +83,7 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
             throw new InvalidValueTypeException("Value cannot be used as a boolean");
         }
 
-        public T AsBool<T>(string index)
+        public T AsEnum<T>(string index)
         {
             if (TryGetValueAs(index, out T enumValue))
                 return enumValue;
@@ -114,7 +126,7 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
             List<T> list = new List<T>();
             foreach (string subValue in splitValue) 
             {
-                if (!TryGetValueFromObjectAs(subValue, out T outValue))
+                if (!dataConverter.TryGetValueFromObjectAs(subValue, out T outValue))
                     throw new InvalidValueTypeException("Value cannot be used as a collection");
 
                 list.Add(outValue);
@@ -126,45 +138,7 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
         public bool TryGetValueAs<T>(string index, out T outValue)
         {
             var value = nameValueMap.Value[index];
-            return TryGetValueFromObjectAs<T>(value, out outValue);
-        }
-
-        private bool TryGetValueFromObjectAs<T>(object value, out T outValue)
-        {
-            if (typeof(T).IsEnum) 
-            {
-                try
-                {
-                    outValue = (T)Enum.Parse(typeof(T), value.ToString(), true);
-                }
-                catch (Exception)
-                {
-                    throw new InvalidValueTypeException("Value cannot be used as an enum");
-                }
-
-                return true;
-            }
-
-            if (value is T convertedValue)
-            {
-                outValue = convertedValue;
-                return true;
-            }
-
-            bool success;
-
-            try
-            {
-                outValue = (T)Convert.ChangeType(value, typeof(T));
-                success = true;
-            }
-            catch (Exception)
-            {
-                outValue = default(T);
-                success = false;
-            }
-
-            return success;
+            return dataConverter.TryGetValueFromObjectAs<T>(value, out outValue);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace DesignAutomationInventorUtilities_Tests.Helpers
 
         public IEnumerator GetEnumerator()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public void Clear()
@@ -35,13 +35,13 @@ namespace DesignAutomationInventorUtilities_Tests.Helpers
             throw new NotImplementedException();
         }
 
-        public object Value { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        //public object Value { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public int Count => throw new NotImplementedException();
+        public int Count => map.Count;
 
-        public object Item => throw new NotImplementedException();
+        //public object Item => throw new NotImplementedException();
 
-        public string Name => throw new NotImplementedException();
+        //public string Name => throw new NotImplementedException();
 
         public object get_Value(string Name)
         {
