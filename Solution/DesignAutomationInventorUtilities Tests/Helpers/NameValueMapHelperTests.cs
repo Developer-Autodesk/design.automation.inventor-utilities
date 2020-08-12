@@ -17,6 +17,7 @@
 /////////////////////////////////////////////////////////////////////
 using Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers;
 using Inventor;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Xunit;
@@ -73,6 +74,20 @@ namespace DesignAutomationInventorUtilities_Tests.Helpers
 
     public class NameValueMapHelperTests
     {
+        [Fact]
+        public void ExceptionsTest()
+        {
+            NameValueMap nameValueMap = new NameValueMapStub();
+            nameValueMap.Value["StringValue"] = "Test String";
+
+            NameValueMapHelper mapHelper = new NameValueMapHelper(nameValueMap);
+
+            Assert.Throws<KeyNotFoundException>(() => mapHelper.AsString("WrongIndex"));
+            Assert.Throws<InvalidValueTypeException>(() => mapHelper.AsInt("StringValue"));
+            Assert.Throws<KeyNotFoundException>(() => mapHelper.AsStringCollection("WrongIndex"));
+            Assert.Throws<InvalidValueTypeException>(() => mapHelper.AsIntCollection("StringValue"));
+        }
+
         [Fact]
         public void TestHasValue()
         {

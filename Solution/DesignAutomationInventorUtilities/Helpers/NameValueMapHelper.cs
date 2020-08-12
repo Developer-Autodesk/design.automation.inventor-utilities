@@ -56,7 +56,8 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
             if (TryGetValueAs(index, out string strValue))
                 return strValue;
 
-            throw new InvalidValueTypeException("Value cannot be used as a string");
+            ThrowException(index, "Value cannot be used as a string");
+            return default;
         }
 
         public int AsInt(string index)
@@ -64,7 +65,8 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
             if (TryGetValueAs(index, out int intValue))
                 return intValue;
 
-            throw new InvalidValueTypeException("Value cannot be used as an integer");
+            ThrowException(index, "Value cannot be used as an integer");
+            return default;
         }
 
         public double AsDouble(string index)
@@ -72,7 +74,8 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
             if (TryGetValueAs(index, out double doubleValue))
                 return doubleValue;
 
-            throw new InvalidValueTypeException("Value cannot be used as a double");
+            ThrowException(index, "Value cannot be used as a double");
+            return default;
         }
 
         public bool AsBool(string index)
@@ -80,7 +83,8 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
             if (TryGetValueAs(index, out bool boolValue))
                 return boolValue;
 
-            throw new InvalidValueTypeException("Value cannot be used as a boolean");
+            ThrowException(index, "Value cannot be used as a boolean");
+            return default;
         }
 
         public T AsEnum<T>(string index)
@@ -88,7 +92,8 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
             if (TryGetValueAs(index, out T enumValue))
                 return enumValue;
 
-            throw new InvalidValueTypeException("Value cannot be used as an enum");
+            ThrowException(index, "Value cannot be used as an enum");
+            return default;
         }
 
         public IEnumerable<string> AsStringCollection(string index)
@@ -119,7 +124,7 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
         public IEnumerable<T> GetValuesCollection<T>(string index)
         {
             if (!TryGetValueAs(index, out string outString))
-                throw new InvalidValueTypeException("Value cannot be used as a collection because it is not a string");
+                ThrowException(index, "Value cannot be used as a collection because it is not a string");
 
             string[] splitValue = outString.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -137,8 +142,22 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
 
         public bool TryGetValueAs<T>(string index, out T outValue)
         {
-            var value = nameValueMap.Value[index];
+            object value;
+
+            try
+            {
+                value = nameValueMap.Value[index];
+            }
+            catch (Exception) { outValue = default; return false; }
+
             return dataConverter.TryGetValueFromObjectAs<T>(value, out outValue);
+        }
+
+        private void ThrowException(string index, string errorMessage)
+        {
+            if (!HasKey(index))
+                throw new KeyNotFoundException($"Key {index} was not found inside of the map");
+            throw new InvalidValueTypeException(errorMessage);
         }
     }
 }
