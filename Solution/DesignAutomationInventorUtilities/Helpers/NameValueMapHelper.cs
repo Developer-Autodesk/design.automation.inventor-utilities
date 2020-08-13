@@ -98,30 +98,30 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
 
         public IEnumerable<string> AsStringCollection(string index)
         {
-            return GetValuesCollection<string>(index);
+            return GetValueAsCollection<string>(index);
         }
 
         public IEnumerable<int> AsIntCollection(string index)
         {
-            return GetValuesCollection<int>(index);
+            return GetValueAsCollection<int>(index);
         }
 
         public IEnumerable<double> AsDoubleCollection(string index)
         {
-            return GetValuesCollection<double>(index);
+            return GetValueAsCollection<double>(index);
         }
 
         public IEnumerable<bool> AsBoolCollection(string index)
         {
-            return GetValuesCollection<bool>(index);
+            return GetValueAsCollection<bool>(index);
         }
 
         public IEnumerable<T> AsEnumCollection<T>(string index)
         {
-            return GetValuesCollection<T>(index);
+            return GetValueAsCollection<T>(index);
         }
 
-        public IEnumerable<T> GetValuesCollection<T>(string index)
+        public IEnumerable<T> GetValueAsCollection<T>(string index)
         {
             if (!TryGetValueAs(index, out string outString))
                 ThrowException(index, "Value cannot be used as a collection because it is not a string");
