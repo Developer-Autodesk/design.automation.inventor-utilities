@@ -2,6 +2,9 @@
 
 # design.automation.inventor-utilities
 
+# 1.0.0-beta4
+* added new helper class NameValueMapHelper that serves as a wrapper around NameValueMap. The class is designed to provide the user with easier interface for the underlying data stored inside of the NameValueMap.  See [NameValueMapHelper page](NameValueMapHelper.md) for more information.
+
 # 1.0.0-beta3
 
 * modified contract for HttpOperation
