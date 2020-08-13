@@ -56,9 +56,9 @@ You can also convert string values separated either by space or by coma into enu
 
 ```csharp
 	IEnumerable<string> myStringCollection = mapHelper.AsStringCollection("StringCollection");
-	IEnumerable<int> myIntCollection = mapHelper.AsInt("IntCollection");
-	IEnumerable<double> myDoubleCollection = mapHelper.AsDouble("DoubleCollection");
-	IEnumerable<bool> myBoolCollection = mapHelper.AsBool("BoolCollection");
+	IEnumerable<int> myIntCollection = mapHelper.AsIntCollection("IntCollection");
+	IEnumerable<double> myDoubleCollection = mapHelper.AsDoubleCollection("DoubleCollection");
+	IEnumerable<bool> myBoolCollection = mapHelper.AsBoolCollection("BoolCollection");
 ```
 
 You can even convert map values to enum using AsEnum and AsEnumCollection 
@@ -71,7 +71,7 @@ You can even convert map values to enum using AsEnum and AsEnumCollection
 To try and convert the map value to any other type, you can use TryGetValueAs and GetValuesCollection pair of generic methods 
 ```csharp
 	bool success = TryGetValueAs("DoubleValue", out float floatValue);
-	IEnumerable<float> myFloatCollection = mapHelper.GetValuesCollection<float>("DoubleCollection");
+	IEnumerable<float> myFloatCollection = mapHelper.GetValueAsCollection<float>("DoubleCollection");
 }
 ```
 
