@@ -18,6 +18,7 @@
 
 using Inventor;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
@@ -27,7 +28,7 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
         public InvalidValueTypeException(string message) : base(message) {}
     }
 
-    public class NameValueMapHelper
+    public class NameValueMapHelper : NameValueMap
     {
         private readonly NameValueMap nameValueMap;
         private readonly DataConverter dataConverter;
@@ -159,5 +160,26 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
                 throw new KeyNotFoundException($"Key {index} was not found inside of the map");
             throw new InvalidValueTypeException(errorMessage);
         }
+
+        public void Add(string Name, object Value) => nameValueMap.Add(Name, Value);
+
+        public IEnumerator GetEnumerator() => nameValueMap.GetEnumerator();
+
+        public void Clear() => nameValueMap.Clear();
+
+        public void Remove(object Index) => nameValueMap.Remove(Index);
+
+        public void Insert(string Name, object Value, object TargetIndex, bool InsertBefore = true)
+            => nameValueMap.Insert(Name, Value, TargetIndex, InsertBefore);
+
+        public object get_Value(string Name) => nameValueMap.Value[Name];
+
+        public void set_Value(string Name, object value) => nameValueMap.Value[Name] = value;
+
+        public int Count => nameValueMap.Count;
+
+        public object get_Item(object Index) => nameValueMap.Item[Index];
+
+        public string get_Name(int Index) => nameValueMap.Name[Index];
     }
 }
