@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <Reference Include="Autodesk.Inventor.Interop">
-      <HintPath>..\..\..\Autodesk.Inventor.Interop.dll</HintPath>
+      <HintPath>C:\Program Files\Autodesk\Inventor Server 2021\Inventor Server\Bin\Public Assemblies\Autodesk.Inventor.Interop.dll</HintPath>
     </Reference>
   </ItemGroup>
 
