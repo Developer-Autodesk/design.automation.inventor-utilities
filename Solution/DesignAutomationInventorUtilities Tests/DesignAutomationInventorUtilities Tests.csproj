@@ -5,6 +5,7 @@
     <RootNamespace>DesignAutomationInventorUtilities_Tests</RootNamespace>
 
     <IsPackable>false</IsPackable>
+    <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,8 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Autodesk.Inventor.Interop">
-      <HintPath>..\..\..\Autodesk.Inventor.Interop.dll</HintPath>
+    <Reference Include="Autodesk.Inventor.Interop, Culture=neutral, PublicKeyToken=d84147f8b4276564, processorArchitecture=MSIL" >
+      <SpecificVersion>True</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
   </ItemGroup>
 
