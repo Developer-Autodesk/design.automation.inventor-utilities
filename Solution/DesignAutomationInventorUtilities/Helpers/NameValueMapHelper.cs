@@ -20,26 +20,21 @@ using Inventor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
 {
     public class InvalidValueTypeException : Exception
     {
-        public InvalidValueTypeException(string message) : base(message) {}
+        public InvalidValueTypeException(string message) : base(message) { }
     }
 
-    public class NameValueMapHelper : NameValueMap
+    public static class NameValueMapHelper
     {
-        private readonly NameValueMap nameValueMap;
-        private readonly DataConverter dataConverter;
+        private static readonly DataConverter dataConverter = new DataConverter();
+        private static readonly char[] Separators = " ,".ToCharArray();
 
-        public NameValueMapHelper(NameValueMap nameValueMap)
-        {
-            this.nameValueMap = nameValueMap;
-            dataConverter = new DataConverter();
-        }
-
-        public bool HasKey(string key)
+        public static bool HasKey(this NameValueMap nameValueMap, string key)
         {
             bool hasKey;
 
@@ -52,96 +47,89 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
             return hasKey;
         }
 
-        public string AsString(string index)
+        public static string AsString(this NameValueMap nameValueMap, string index)
         {
-            if (TryGetValueAs(index, out string strValue))
+            if (nameValueMap.TryGetValueAs(index, out string strValue))
                 return strValue;
 
-            ThrowException(index, "Value cannot be used as a string");
-            return default;
+            throw new InvalidValueTypeException("Value cannot be used as a string");
         }
 
-        public int AsInt(string index)
+        public static int AsInt(this NameValueMap nameValueMap, string index)
         {
-            if (TryGetValueAs(index, out int intValue))
+            if (nameValueMap.TryGetValueAs(index, out int intValue))
                 return intValue;
 
-            ThrowException(index, "Value cannot be used as an integer");
-            return default;
+            throw new InvalidValueTypeException("Value cannot be used as an integer");
         }
 
-        public double AsDouble(string index)
+        public static double AsDouble(this NameValueMap nameValueMap, string index)
         {
-            if (TryGetValueAs(index, out double doubleValue))
+            if (nameValueMap.TryGetValueAs(index, out double doubleValue))
                 return doubleValue;
 
-            ThrowException(index, "Value cannot be used as a double");
-            return default;
+            throw new InvalidValueTypeException("Value cannot be used as a double");
         }
 
-        public bool AsBool(string index)
+        public static bool AsBool(this NameValueMap nameValueMap, string index)
         {
-            if (TryGetValueAs(index, out bool boolValue))
+            if (nameValueMap.TryGetValueAs(index, out bool boolValue))
                 return boolValue;
 
-            ThrowException(index, "Value cannot be used as a boolean");
-            return default;
+            throw new InvalidValueTypeException("Value cannot be used as a boolean");
         }
 
-        public T AsEnum<T>(string index)
+        public static T AsEnum<T>(this NameValueMap nameValueMap, string index)
         {
-            if (TryGetValueAs(index, out T enumValue))
+            if (nameValueMap.TryGetValueAs(index, out T enumValue))
                 return enumValue;
 
-            ThrowException(index, "Value cannot be used as an enum");
-            return default;
+            throw new InvalidValueTypeException("Value cannot be used as an enum");
         }
 
-        public IEnumerable<string> AsStringCollection(string index)
+        public static IEnumerable<string> AsStringCollection(this NameValueMap nameValueMap, string index)
         {
-            return GetValueAsCollection<string>(index);
+            return nameValueMap.GetValueAsCollection<string>(index);
         }
 
-        public IEnumerable<int> AsIntCollection(string index)
+        public static IEnumerable<int> AsIntCollection(this NameValueMap nameValueMap, string index)
         {
-            return GetValueAsCollection<int>(index);
+            return nameValueMap.GetValueAsCollection<int>(index);
         }
 
-        public IEnumerable<double> AsDoubleCollection(string index)
+        public static IEnumerable<double> AsDoubleCollection(this NameValueMap nameValueMap, string index)
         {
-            return GetValueAsCollection<double>(index);
+            return nameValueMap.GetValueAsCollection<double>(index);
         }
 
-        public IEnumerable<bool> AsBoolCollection(string index)
+        public static IEnumerable<bool> AsBoolCollection(this NameValueMap nameValueMap, string index)
         {
-            return GetValueAsCollection<bool>(index);
+            return nameValueMap.GetValueAsCollection<bool>(index);
         }
 
-        public IEnumerable<T> AsEnumCollection<T>(string index)
+        public static IEnumerable<T> AsEnumCollection<T>(this NameValueMap nameValueMap, string index)
         {
-            return GetValueAsCollection<T>(index);
+            return nameValueMap.GetValueAsCollection<T>(index);
         }
 
-        public IEnumerable<T> GetValueAsCollection<T>(string index)
+        public static IEnumerable<T> GetValueAsCollection<T>(this NameValueMap nameValueMap, string index)
         {
-            if (!TryGetValueAs(index, out string outString))
-                ThrowException(index, "Value cannot be used as a collection because it is not a string");
+            if (!nameValueMap.TryGetValueAs(index, out string outString))
+                throw new InvalidValueTypeException("Value cannot be used as a collection because it is not a string");
 
-            string[] splitValue = outString.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+            return outString
+                .Split(Separators, StringSplitOptions.RemoveEmptyEntries)
+                .Select(item =>
+                {
+                    if (!dataConverter.TryGetValueFromObjectAs(item, out T outValue))
+                        throw new InvalidValueTypeException("Value cannot be used as a collection");
 
-            List<T> list = new List<T>();
-            foreach (string subValue in splitValue) 
-            {
-                if (!dataConverter.TryGetValueFromObjectAs(subValue, out T outValue))
-                    throw new InvalidValueTypeException("Value cannot be used as a collection");
-
-                list.Add(outValue);
-            }
-
-            return list;
+                    return outValue;
+                })
+                .ToList();
         }
 
-        public bool TryGetValueAs<T>(string index, out T outValue)
+        public static bool TryGetValueAs<T>(this NameValueMap nameValueMap, string index, out T outValue)
         {
             object value;
 
@@ -149,37 +137,16 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
             {
                 value = nameValueMap.Value[index];
             }
-            catch (Exception) { outValue = default; return false; }
+            catch (KeyNotFoundException)
+            {
+                throw;
+            }
+            catch(Exception)
+            {
+                outValue = default; return false; 
+            }
 
-            return dataConverter.TryGetValueFromObjectAs<T>(value, out outValue);
+            return dataConverter.TryGetValueFromObjectAs(value, out outValue);
         }
-
-        private void ThrowException(string index, string errorMessage)
-        {
-            if (!HasKey(index))
-                throw new KeyNotFoundException($"Key {index} was not found inside of the map");
-            throw new InvalidValueTypeException(errorMessage);
-        }
-
-        public void Add(string Name, object Value) => nameValueMap.Add(Name, Value);
-
-        public IEnumerator GetEnumerator() => nameValueMap.GetEnumerator();
-
-        public void Clear() => nameValueMap.Clear();
-
-        public void Remove(object Index) => nameValueMap.Remove(Index);
-
-        public void Insert(string Name, object Value, object TargetIndex, bool InsertBefore = true)
-            => nameValueMap.Insert(Name, Value, TargetIndex, InsertBefore);
-
-        public object get_Value(string Name) => nameValueMap.Value[Name];
-
-        public void set_Value(string Name, object value) => nameValueMap.Value[Name] = value;
-
-        public int Count => nameValueMap.Count;
-
-        public object get_Item(object Index) => nameValueMap.Item[Index];
-
-        public string get_Name(int Index) => nameValueMap.Name[Index];
     }
 }
