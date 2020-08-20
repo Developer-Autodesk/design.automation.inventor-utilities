@@ -2,6 +2,9 @@
 
 # design.automation.inventor-utilities
 
+# 2.0.0
+* refactored the helper class NameValueMapHelper into an Extension class for the original NameValueMap instead of inheritance. Class name changed to NameValueMapExtension to reflect this change.
+
 # 1.1.0
 * added new helper class NameValueMapHelper that serves as a wrapper around NameValueMap. The class is designed to provide the user with easier interface for the underlying data stored inside of the NameValueMap.  See [NameValueMapHelper page](NameValueMapHelper.md) for more information.
 
