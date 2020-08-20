@@ -29,7 +29,7 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers
         public InvalidValueTypeException(string message) : base(message) { }
     }
 
-    public static class NameValueMapHelper
+    public static class NameValueMapExtension
     {
         private static readonly DataConverter dataConverter = new DataConverter();
         private static readonly char[] Separators = " ,".ToCharArray();
