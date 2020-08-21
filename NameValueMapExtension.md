@@ -1,5 +1,11 @@
 # NameValueMapExtension
 This extension class is designed to simplify work with the data inside of the NameValueMap by adding multiple useful extension methods.
+First we have to include the extension helper class into our project:
+
+```csharp
+using Autodesk.Forge.DesignAutomation.Inventor.Utils.Helpers;
+```
+
 For this example lets consider a NameValueMap that contains these data:
 ```csharp
 nameValueMap.Value["StringValue"] = "TestString";
