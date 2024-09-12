@@ -35,7 +35,10 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils
 
                 for (; ; )
                 {
-                    Thread.Sleep((int)intervalMillisec);
+                    if (mre.WaitOne(TimeSpan.FromMilliseconds(intervalMillisec)))
+                    {
+                        break;
+                    }
                     LogTrace("HeartBeat {0}.", (long)(new TimeSpan(DateTime.Now.Ticks - ticks).TotalSeconds));
                 }
 
@@ -58,7 +61,8 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils
                 if (t != null)
                 {
                     LogTrace("Ending HeartBeat");
-                    t.Abort();
+                    mre.Set();
+                    t.Join();
                     t = null;
                 }
             }
@@ -73,6 +77,7 @@ namespace Autodesk.Forge.DesignAutomation.Inventor.Utils
         }
 
         private Thread t;
+        private ManualResetEvent mre = new ManualResetEvent(false);
         private long ticks;
     }
 }
