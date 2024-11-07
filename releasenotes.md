@@ -2,6 +2,9 @@
 
 # design.automation.inventor-utilities
 
+# 2.0.1
+* fixed HeartBeat issue with .net8.
+
 # 2.0.0
 * refactored the helper class NameValueMapHelper into an Extension class for the original NameValueMap instead of inheritance. Class name changed to NameValueMapExtension to reflect this change.
 
