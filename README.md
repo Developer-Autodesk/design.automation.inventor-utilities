@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
 ![Platforms](https://img.shields.io/badge/Design%20Automation-v3-green.svg)
-![Platforms](https://img.shields.io/badge/Inventor-2018|2019|2020-yellow.svg)
+![Platforms](https://img.shields.io/badge/Inventor-grey.svg)
 
 This is package helps leverage Inventor plugin code for Design Automation. The compiled version is available on [Nuget](https://www.nuget.org/packages/Autodesk.Forge.DesignAutomation.Inventor.Utils). 
 
