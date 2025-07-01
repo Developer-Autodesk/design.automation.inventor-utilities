@@ -5,7 +5,7 @@
     <AssemblyName>Autodesk.Forge.DesignAutomation.Inventor.Utils</AssemblyName>
     <RootNamespace>Autodesk.Forge.DesignAutomation.Inventor.Utils</RootNamespace>
     <PackageId>Autodesk.Forge.DesignAutomation.Inventor.Utils</PackageId>
-    <Authors>Design Automation Team</Authors>
+    <Authors>Inventor Automation Team</Authors>
     <Company>Autodesk</Company>
     <PackageTags>invio</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

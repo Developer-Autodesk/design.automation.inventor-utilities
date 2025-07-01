@@ -1,22 +1,20 @@
 
-# Design Automation for Inventor - Utility Library
+# Inventor Automation API Utility Library
 
 ![Platforms](https://img.shields.io/badge/Platform-Windows-lightgrey.svg)
 ![.NET](https://img.shields.io/badge/.NET%20Standard-2.0-blue.svg)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
-![Platforms](https://img.shields.io/badge/Design%20Automation-v3-green.svg)
+![Platforms](https://img.shields.io/badge/Automation%20API-v3-green.svg)
 ![Platforms](https://img.shields.io/badge/Inventor-grey.svg)
 
-This is package helps leverage Inventor plugin code for Design Automation. The compiled version is available on [Nuget](https://www.nuget.org/packages/Autodesk.Forge.DesignAutomation.Inventor.Utils). 
+This is package helps leverage Inventor plugin code for the Automation Service. The compiled version is available on [Nuget](https://www.nuget.org/packages/Autodesk.Forge.DesignAutomation.Inventor.Utils).
 
 ## Usage
 
-This package is used by the [Design Automation for Inventor](https://marketplace.visualstudio.com/items?itemName=Autodesk.DesignAutomation) Visual Studio template. 
+This package is used by the [Inventor Automation API template](https://marketplace.visualstudio.com/items?itemName=Autodesk.DesignAutomation2) Visual Studio template.
 
 ## Documentation
-
-Please refer to [this sample](https://github.com/Developer-Autodesk/design.automation.inventor-csharp-basics) for more information. 
 
 #### HeartBeat class
 
@@ -46,4 +44,4 @@ This library is licensed under the terms of the [MIT License](http://opensource.
 
 ## Written by
 
-David Obergries, [Forge Partner Development](http://forge.autodesk.com)
+David Obergries, [APS Partner Development](https://aps.autodesk.com/)
